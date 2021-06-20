@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  labels:
+    app: hello-world
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      volumes:
+      - name: http-storage
+        persistentVolumeClaim:
+         claimName: pv0001-claim
+      containers:
+      - name: hello-world
+        image: quay.io/madaferva/hello-world:v3
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /http
+          name: http-storage
